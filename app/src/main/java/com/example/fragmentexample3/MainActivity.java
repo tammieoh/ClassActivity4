@@ -10,9 +10,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+import java.time.chrono.IsoChronology;
+
+public class MainActivity extends AppCompatActivity implements ISecondFragmentActivity{
 
     private boolean twoPane = false;
+    protected String smug = "smug";
+    protected String house = "house_info";
+    private boolean loadTitle = true, loadDescription = true;
 
 
     @Override
@@ -31,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             Button button_personality = findViewById(R.id.button_personality);
 
             button_personality.setOnClickListener(v -> {
-                launchSecondActivity(v);
+                launchActivity(v);
             });
 //
             Button button_houseInfo = findViewById(R.id.button_houseInfo);
@@ -41,19 +46,13 @@ public class MainActivity extends AppCompatActivity {
 
         }
         else {
-            Bundle bundle = new Bundle();
-            bundle.putString("personality", String.valueOf(R.string.smug));
-            SecondFragment secondFragment_personality = new SecondFragment();
-            secondFragment_personality.setArguments(bundle);
-
-            Bundle bundle_house = new Bundle();
-            SecondFragment secondFragment_house = new SecondFragment();
-            bundle_house.putString("house_info", String.valueOf(R.string.house));
-            secondFragment_house.setArguments(bundle_house);
-
 
             loadFragment(new FirstFragment(), R.id.fragContainer_landFirst);
+
+            SecondFragment secondFragment_personality = new SecondFragment();
             loadFragment(secondFragment_personality, R.id.fragContainer_landSecondSmug);
+
+            SecondFragment secondFragment_house = new SecondFragment();
             loadFragment(secondFragment_house, R.id.fragContainer_landSecondHouse);
         }
     }
@@ -62,19 +61,47 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         // create a fragment transaction to begin the transaction and replace the fragment
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        //replacing the placeholder - fragmentContainterView with the fragment that is passed as parameter
+        //replacing the placeholder - fragmentContainerView with the fragment that is passed as parameter
         fragmentTransaction.replace(id, fragment);
         fragmentTransaction.commit();
     }
 
-    public void launchSecondActivity(View view){
+    public void launchActivity(View view){
         Intent intent = new Intent(this, SecondActivity.class);
+//        intent.putExtra("button_text", button_personality.getText());
         startActivity(intent);
 
     }
     public void launchThirdActivity(View view){
         Intent intent = new Intent(this, ThirdActivity.class);
+//        intent.putExtra("button_text", button_house.getText());
         startActivity(intent);
 
+    }
+
+    @Override
+    public String getText() {
+        String text = "";
+        if(this.loadTitle) {
+            text = getResources().getString(R.string.smug_title);
+            this.loadTitle = false;
+        }
+        else {
+            text = getResources().getString(R.string.house_info);
+        }
+        return text;
+    }
+
+    @Override
+    public String getDescription() {
+        String text = "";
+        if(this.loadDescription) {
+            text = getResources().getString(R.string.smug);
+            this.loadDescription = false;
+        }
+        else {
+            text = getResources().getString(R.string.house);
+        }
+        return text;
     }
 }

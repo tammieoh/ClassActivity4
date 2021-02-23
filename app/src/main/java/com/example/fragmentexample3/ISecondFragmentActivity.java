@@ -1,7 +1,11 @@
 package com.example.fragmentexample3;
 
+import android.view.View;
+
 public interface ISecondFragmentActivity {
 
-    void setTitle(String text);
-    void setDescription(String text);
+    String getText();
+    String getDescription();
+
+
 }

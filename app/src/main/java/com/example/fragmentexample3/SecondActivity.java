@@ -1,5 +1,6 @@
 package com.example.fragmentexample3;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -8,25 +9,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class SecondActivity extends AppCompatActivity{
+public class SecondActivity extends AppCompatActivity implements ISecondFragmentActivity{
 
 //    private TextView title_textView;
 //    private TextView desc_textView;
+//    private String title;
+//    private String description;
+//    protected String title;
+//    protected String description = String.valueOf(R.string.smug);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
-//        title_textView = findViewById(R.id.textView_title);
-//        desc_textView = findViewById(R.id.textView_description);
-
-
-        Bundle bundle = new Bundle();
-        bundle.putString("personality", "Smug");
         SecondFragment secondFragment = new SecondFragment();
-        secondFragment.setArguments(bundle);
-
         loadFragment(secondFragment, R.id.fragContainer_second);
     }
 
@@ -34,17 +31,19 @@ public class SecondActivity extends AppCompatActivity{
         FragmentManager fragmentManager = getSupportFragmentManager();
         // create a fragment transaction to begin the transaction and replace the fragment
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        //replacing the placeholder - fragmentContainterView with the fragment that is passed as parameter
+        //replacing the placeholder - fragmentContainerView with the fragment that is passed as parameter
         fragmentTransaction.replace(id, fragment);
         fragmentTransaction.commit();
     }
 
-//    @Override
-//    public void setTitle(String title) {
-//
-//    }
-//    @Override
-//    public void setDescription(String description) {
-//
-//    }
+    @Override
+    public String getText() {
+        return getResources().getString(R.string.smug_title);
+    }
+
+    @Override
+    public String getDescription() {
+        return getResources().getString(R.string.smug);
+    }
+
 }
